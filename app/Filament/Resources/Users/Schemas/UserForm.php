@@ -24,7 +24,7 @@ class UserForm
                 TextInput::make('password')
                     ->password()
                     ->required()
-                    ->minLength(6) 
+                    ->minLength(6),
             ]);
     }
 }
