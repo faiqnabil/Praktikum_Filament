@@ -16,7 +16,6 @@ class CategoryForm
 
                 TextInput::make('slug')
                     ->required()
-                    // MODIFIKASI: Tambahkan validasi unik
                     ->unique(ignoreRecord: true), 
             ]);
     }
