@@ -13,15 +13,15 @@ class Post extends Model
         'category_id',
         'color',
         'image',
-        'body',      
+        'body',      // Menggunakan 'body' sesuai struktur database Anda
         'tags',
         'published',
         'published_at',
     ];
 
     protected $casts = [
-        'tags' => 'array',             
-        'published' => 'boolean',      
+        'tags' => 'array',
+        'published' => 'boolean',
         'published_at' => 'datetime',
     ];
 

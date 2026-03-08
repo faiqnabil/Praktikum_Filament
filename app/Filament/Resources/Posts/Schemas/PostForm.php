@@ -11,6 +11,9 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Schemas\Components\Section;
+// PENTING: Import Group untuk menumpuk section secara vertikal di kanan
+use Filament\Schemas\Components\Group; 
 
 class PostForm
 {
@@ -18,34 +21,54 @@ class PostForm
     {
         return $schema
             ->components([
-                TextInput::make("title")
-                    ->minLength(5) // Tugas 1: Min 5 karakter
-                    ->required(),
+                // AREA KIRI: Post Details (Mengambil lebar 2 bagian)
+                Section::make("Post Details")
+                    ->description("Fill in the details of the post")
+                    ->icon('heroicon-o-document-text')
+                    ->schema([
+                        TextInput::make("title")
+                            ->minLength(5)
+                            ->required(),
 
-                TextInput::make("slug")
-                    ->unique(ignoreRecord: true) // Tugas 1: Slug unik
-                    ->required(),
+                        TextInput::make("slug")
+                            ->unique(ignoreRecord: true)
+                            ->required(),
 
-                Select::make("category_id")
-                    ->relationship("category", "name")
-                    ->preload()
-                    ->searchable()
-                    ->required(),
-                    
-                ColorPicker::make("color"),
+                        Select::make("category_id")
+                            ->relationship("category", "name")
+                            ->preload()
+                            ->searchable()
+                            ->required(),
 
-                // PERBAIKAN: Menggunakan 'body' agar tidak error Unknown Column
-                MarkdownEditor::make("body"), 
+                        ColorPicker::make("color"),
 
-                FileUpload::make("image")
-                    ->disk("public")
-                    ->directory("posts"),
+                        // Gunakan nama kolom 'body' agar sinkron dengan database
+                        MarkdownEditor::make("body"), 
+                    ])
+                    ->columnSpan(2), // Mengatur lebar ke 2 bagian grid
 
-                TagsInput::make("tags"),
+                // AREA KANAN: Sidebar (Mengambil lebar 1 bagian)
+                Group::make()
+                    ->schema([
+                        // Section Upload Gambar
+                        Section::make("Image Upload")
+                            ->schema([
+                                FileUpload::make("image")
+                                    ->disk("public")
+                                    ->directory("posts"),
+                            ]),
 
-                Checkbox::make("published"),
-
-                DateTimePicker::make("published_at"),
-            ]);
+                        // Section Meta Data
+                        Section::make("Meta Information")
+                            ->schema([
+                                TagsInput::make("tags"),
+                                Checkbox::make("published"),
+                                DateTimePicker::make("published_at"),
+                            ]),
+                    ])
+                    ->columnSpan(1), // Menempati sisa 1 bagian grid di kanan
+            ])
+            // Mengaktifkan sistem grid 3 kolom pada skema utama
+            ->columns(3); 
     }
 }
