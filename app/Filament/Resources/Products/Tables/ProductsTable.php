@@ -17,14 +17,25 @@ class ProductsTable
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
+
                 TextColumn::make('sku')
-                    ->label('SKU'),
+                    ->label('SKU')
+                    ->sortable(),
+
                 TextColumn::make('price')
-                    ->money('idr'), // Format mata uang Rupiah
-                TextColumn::make('stock'),
+                    ->money('idr')
+                    ->sortable(),
+
+                TextColumn::make('stock')
+                    ->sortable(),
+
+                TextColumn::make('created_at')
+                    ->Label('Created At')
+                    ->dateTime()
+                    ->sortable(),
                 
-                // Menampilkan Badge untuk Status Aktif
                 TextColumn::make('is_active')
                     ->label('Status')
                     ->badge()
@@ -33,7 +44,8 @@ class ProductsTable
 
                 ImageColumn::make('image')
                     ->disk('public'),
-            ])
+
+            ])->defaultSort('created_at', 'asc')
             ->filters([
                 //
             ])

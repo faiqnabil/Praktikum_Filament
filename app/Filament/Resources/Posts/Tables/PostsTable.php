@@ -17,19 +17,31 @@ class PostsTable
     {
         return $table
             ->columns([
-                TextColumn::make('title'),
-                
-                TextColumn::make('category.name'),
+                TextColumn::make('title')
+                ->sortable(),
 
-                ColorColumn::make('color'),
+                TextColumn::make('slug')
+                ->sortable(),
+                
+                TextColumn::make('category.name')
+                ->sortable(),
+
+                ColorColumn::make('color')
+                ->sortable(),
 
                 ImageColumn::make('image')
-                    ->disk('public'),
+                ->disk('public'),
 
-                // Tugas 2: Ikon boolean untuk status published
-                IconColumn::make('published')
-                    ->boolean(), 
+                TextColumn::make('created_at')
+                ->Label('Created At')
+                ->dateTime()
+                ->sortable(),
+
+            ])->defaultSort('created_at', 'desc')
+            ->Filters([
+
             ])
+                
             ->recordActions([
                 EditAction::make(),
             ])
