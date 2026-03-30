@@ -13,7 +13,7 @@ class Post extends Model
         'category_id',
         'color',
         'image',
-        'body',      // Menggunakan 'body' sesuai struktur database Anda
+        'body',
         'tags',
         'published',
         'published_at',
@@ -23,7 +23,7 @@ class Post extends Model
         'tags' => 'array',
         'is_published' => 'boolean',
     ];
-    public function category(): BelongsTo
+    public function category()
     {
         return $this->belongsTo(Category::class);
     }

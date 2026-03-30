@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Posts\Schemas;
 
+use App\Models\Category;
 use Filament\Schemas\Schema;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
@@ -25,7 +26,6 @@ class PostForm
                     ->icon('heroicon-o-document-text')
                     ->schema([
                         Group::make([
-                            // 1. Title: Minimal 5 karakter & Custom Message
                             TextInput::make("title")
                                 ->required()
                                 ->rules(["required", "min:5"]) 
@@ -33,7 +33,6 @@ class PostForm
                                     "min" => "Judul terlalu pendek, minimal 5 karakter", 
                                 ]),
 
-                            // 2. Slug: Unik & Minimal 3 karakter
                             TextInput::make("slug")
                                 ->required()
                                 ->rules(["required", "min:3"])
@@ -43,11 +42,11 @@ class PostForm
                                     "min" => "Slug minimal 3 karakter ya!",
                                 ]),
 
-                            // 3. Category: Wajib dipilih
                             Select::make("category_id")
                                 ->relationship("category", "name")
-                                ->required() 
-                                ->preload()
+                                ->options(Category::all()->pluck("name", "id"))
+                                ->required()
+                                // ->preload()
                                 ->searchable(),
 
                             ColorPicker::make("color"),
@@ -60,7 +59,6 @@ class PostForm
                 Group::make([
                     Section::make("Image Upload")
                         ->schema([
-                            // 4. Image: Wajib diupload
                             FileUpload::make("image")
                                 ->disk("public")
                                 ->directory("posts")
