@@ -6,7 +6,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Table;
-use Filament\Tables\Columns\TextColumn; // Diimpor pada baris 9
+use Filament\Tables\Columns\TextColumn;
 
 class CategoriesTable
 {
@@ -17,10 +17,8 @@ class CategoriesTable
     {
         return $table
             ->columns([
-                // Menampilkan kolom nama kategori
                 TextColumn::make('name'),
 
-                // Menampilkan kolom slug kategori
                 TextColumn::make('slug'),
             ])
             ->filters([

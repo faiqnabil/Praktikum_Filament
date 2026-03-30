@@ -21,10 +21,8 @@ class Post extends Model
 
     protected $casts = [
         'tags' => 'array',
-        'published' => 'boolean',
-        'published_at' => 'datetime',
+        'is_published' => 'boolean',
     ];
-
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
