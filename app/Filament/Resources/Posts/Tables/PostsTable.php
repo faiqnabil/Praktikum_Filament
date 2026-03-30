@@ -20,37 +20,54 @@ class PostsTable
     {
         return $table
             ->columns([
+                TextColumn::make('id')
+                    ->label('ID')
+                    ->toggleable(),
+                
                 TextColumn::make('title')
-                ->sortable()
-                ->searchable(),
+                    ->sortable()
+                    ->toggleable()
+                    ->searchable(),
 
                 TextColumn::make('slug')
-                ->sortable()
-                ->searchable(),
+                    ->sortable()
+                    ->toggleable()
+                    ->searchable(),
 
                 TextColumn::make('category.name')
-                ->sortable()
-                ->searchable(),
+                    ->sortable()
+                    ->toggleable()
+                    ->searchable(),
 
                 ColorColumn::make('color')
-                ->sortable(),
+                    ->toggleable()
+                    ->sortable(),
 
                 ImageColumn::make('image')
-                ->disk('public'),
+                    ->toggleable()
+                    ->disk('public'),
 
-                IconColumn::make('is_published')
+                
+                TextColumn::make('created_at')
+                    ->Label('Created At')
+                    ->dateTime()
+                    ->toggleable()
+                    ->sortable(),
+
+                TextColumn::make('tags')
+                    ->label('Tags')
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                IconColumn::make('published')
                     ->label('Published')
                     ->boolean()
                     ->trueIcon('heroicon-o-check-circle')
                     ->falseIcon('heroicon-o-x-circle')
                     ->color(fn (bool $state): string => $state ? 'success' : 'danger')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
-                
-                TextColumn::make('created_at')
-                ->Label('Created At')
-                ->dateTime()
-                ->sortable(),
 
+                    
             ])->defaultSort('created_at', 'asc')
             ->Filters([
                 Filter::make('created_at')
@@ -59,6 +76,7 @@ class PostsTable
                         DatePicker::make('created_at')
                             ->label('Select Date :'),
                     ])
+
                     ->query(function ( $query, $data){
                         return $query
                             ->when(
@@ -66,6 +84,7 @@ class PostsTable
                                 fn ($query, $date) => $query->whereDate('created_at', $date),
                             );
                     }),
+
                 SelectFilter::make('category_id')
                     ->relationship('category', 'name')
                     ->label('Category')
@@ -75,6 +94,7 @@ class PostsTable
             ->recordActions([
                 EditAction::make(),
             ])
+
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
