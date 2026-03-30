@@ -52,7 +52,7 @@ class PostForm
                             ColorPicker::make("color"),
                         ])->columns(2), 
 
-                        MarkdownEditor::make("content"), 
+                        MarkdownEditor::make("body"), 
                     ])
                     ->columnSpan(2),
 
@@ -67,7 +67,11 @@ class PostForm
 
                     Section::make("Meta Information")
                         ->schema([
-                            TagsInput::make("tags"),
+                            Select::make("tags")
+                                ->relationship("tags", "name")
+                                ->multiple()
+                                ->preload()
+                                ->searchable(),
                             Checkbox::make("published"),
                             DateTimePicker::make("published_at"),
                         ]),
